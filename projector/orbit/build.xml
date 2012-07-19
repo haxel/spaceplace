@@ -1,0 +1,42 @@
+<project name="Orbit - Projector zkmax" default="compile" basedir=".">
+  
+  <!-- Declares references to needed directories. -->
+  <property name="assets" location="assets"/>
+  <property name="build" location="public"/>
+  <property name="src" location=""/>
+
+  <property name="swfmill" location="/usr/bin/swfmill"/>
+  <property name="mmClasses" location="/Users/axel/Projekte/actionscript/Classes/"/>
+  <property name="additionalClasses" location="/Users/axel/Projekte/actionscript"/>
+  
+  <!-- Defines the Swf Ant Task by setting a name and the path to the task. -->
+  <taskdef name="swfmill" classname="org.as2lib.ant.Swfmill" />
+  <taskdef name="mtasc" classname="org.as2lib.ant.Mtasc"/>    
+ 
+  <target name="gotchis">
+    <exec dir="./" executable="python">
+      <arg line="gotchilib.py" />    
+    </exec>
+  </target>
+ 
+  <!-- Target that uses the Swf Ant Task. -->
+  <target name="prepare">
+    <swfmill swfmill="${swfmill}"
+      src="assets.xml"
+      dest="${build}/main.swf"
+      cmd="simple"/>
+  </target>
+
+  <target name="compile">
+    <mtasc classpath=".:${additionalClasses}:${mmClasses}"  trace="zeroi.logging.LoggerClass.log" main="true" swf="${build}/main.swf">
+      <srcset dir=".">
+        <include name="zeroi/logging/LuminicPublisher.as"/>
+        <include name="org/roteroktober/zkmax/Controller.as"/>    
+      </srcset>    
+    </mtasc>
+  </target>
+
+  <target name="complete" depends="gotchis,prepare,compile">
+  </target>
+
+</project>

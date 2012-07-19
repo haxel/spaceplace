@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="Orbit" default="jar" basedir=".">
+    
+    <property name="bin" location="bin"/>
+    <property name="src" location="src"/>
+    <property name="classes" location="classes"/>
+    <property name="preverified" location="preverified" />
+    <property name="lib" location="lib"/>
+    <property name="dist" location="dist"/>
+    <property name="jarfile" location="${dist}/${ant.project.name}.jar"/>
+    <property name="jadfile" location="${dist}/${ant.project.name}.jad"/>
+    <property name="compile.debug" value="true"/>
+    <property name="resources" location="res"/>
+    
+  <!-- Edit the "mpp" property with the path to your installed mpp-sdk. -->
+  <property name="mpp" value="/Developer/Java/mpp-sdk"/>
+  <property name="mppdev" value="${mpp}"/>
+
+  <!-- The "preverify" target requires the bootstrap classes. (This is where they live on Mac OS X.) -->
+  <property name="java.classes.jar" value="/System/Library/Frameworks/JavaVM.framework/Versions/1.4.2/Classes/classes.jar" />
+
+  <fileset id="lib.jars" dir="${lib}">
+      <include name="**/*.jar"/>
+  </fileset>
+
+  <path id="lib.path">
+      <fileset refid="lib.jars"/>
+  </path>
+
+    <target name="compile" description="Compile code">
+        <mkdir dir="${classes}"/>
+        <javac source="1.4" target="1.4.2" verbose="false" srcdir="${src}" destdir="${classes}" includeAntRuntime="no" classpath="${mppdev}/cldc.jar:${mppdev}/midp.jar:jsr082.jar" debug="${compile.debug}">
+        </javac>
+    </target>
+    
+      <!-- The preverify target is set up for Mac OS X -->
+      <target name="preverify" depends="compile">
+        <mkdir dir="${preverified}"/>
+        <exec executable="${mppdev}/osx/preverify/preverify">
+          <arg line="-classpath ${java.classes.jar}:${mppdev}/cldc.jar:${mppdev}/midp.jar:jsr082.jar"/>    
+          <arg line="-d ${preverified}"/>
+        
+          <arg line="classes"/>
+        </exec>
+      </target>
+
+    <!-- this target will automatically create an html file with
+    an incremented build number and version number-->
+    <target name="versionInfo" depends="preverify" >
+        <propertyfile
+            file="${bin}/version.properties" comment="Build version info">
+            <entry key="buildDate" type="date" value="now"/>
+            <entry key="buildNum" default="0" type="int" operation="+" value="1"/>
+        </propertyfile>
+        <copy file="${bin}/MANIFEST.MF" tofile="${bin}/MANIFEST_numbered.MF" overwrite="true" />
+        <replace
+            file="${bin}/MANIFEST_numbered.MF"
+            value="value not found in version.properties"
+            propertyFile="${bin}/version.properties">
+            <replacefilter
+                token="@buildDate@"
+                property="buildDate"/>
+            <replacefilter
+                token="@buildNum@"
+                property="buildNum"/>
+        </replace>
+    </target>
+    
+    <target name="jar" depends="versionInfo" description="Build jar">
+        <mkdir dir="${dist}"/>
+        <jar jarfile="${jarfile}" basedir="${preverified}" manifest="${bin}/MANIFEST_numbered.MF">
+            <!-- Merge library jars into final jar file -->
+            <zipgroupfileset refid="lib.jars"/>
+            <fileset dir="${resources}"/>
+        </jar>
+        <copy file="${bin}/MANIFEST.MF" tofile="${jadfile}" />
+    </target>
+
+    <target name="run" depends="jar" description="Run jar file">
+        <java jar="${mppdev}/player.jar" fork="yes" failonerror="true">
+         <arg value="${jarfile}"/>
+        </java>
+    </target>
+
+    <target name="clean" description="Remove build and dist directories">
+        <delete dir="${dist}"/>
+        <delete dir="${classes}" />
+        <delete dir="${preverified}" />
+    </target>
+</project>

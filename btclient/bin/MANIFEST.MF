@@ -1,0 +1,11 @@
+MIDlet-1: Orbit, icon.png, OrbitMIDlet
+MIDlet-Name: Orbit
+MIDlet-Icon: /icon.png
+MIDlet-Vendor: Roteroktober
+MIDlet-Description: Orbit client, compiled @buildDate@
+MIDlet-Version: @buildNum@.0
+MicroEdition-Configuration: CLDC-1.0
+MicroEdition-Profile: MIDP-1.0
+Orbit-IP: XXX.XXX.XXX.XXX
+Orbit-Debug:   TRUE
+Orbit-BluetoothID: XXXXXXXXXXX

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<movie width="1024" height="768" framerate="25" version="7">
+	
+	
+  <background color='#111111'/>
+
+  <frame>
+    <library>
+      <clip id="assets.back" import="assets/bg.swf"/>
+      <clip id="assets.splash" import="assets/splash.swf"/>
+      <clip id="assets.entry" import="assets/entry.swf"/>
+      <clip id="assets.entry.button" import="assets/entry_button.swf"/>
+      <clip id="assets.cursor" import="assets/cursor.swf"/>
+      <clip id="assets.tag" import="assets/tag.swf"/>
+      <clip id="assets.tagentry" import="assets/entry_tag.swf"/>
+      <clip id="assets.alert" import="assets/alert.swf"/>
+	  <import file="assets/gotchis.swf" url="gotchis.swf"/>
+      <font id="verdana" import="assets/verdana.ttf"  /> 	
+    </library>
+	<place id="assets.back" name="background" x="0" y="0" depth="1" />
+  </frame>
+</movie>	

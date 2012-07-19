@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<movie width="1024" height="768" framerate="25" version="8">
+
+
+<background color='#666666'/>
+<frame>
+    <library>
+        <clip id="VideoDisplay">
+            <frame>
+                <video id="vid" width="1024" height="768" smoothing="3" />
+                <place id="vid" name="vid" />
+            </frame>
+        </clip>
+    </library>
+</frame>
+</movie>

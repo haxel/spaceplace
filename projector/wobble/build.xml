@@ -1,0 +1,34 @@
+<project name="Wobble - Projector zkmax" default="compile" basedir=".">
+  
+      <!-- Declares references to needed directories. -->
+      <property name="assets" location="assets"/>
+      <property name="build" location="/orbit/www"/>
+      <property name="src" location=""/>
+
+      <property name="swfmill" location="/usr/bin/swfmill"/>
+      <property name="mmClasses" location="/Users/axel/Projekte/actionscript/Classes/"/>
+      <property name="additionalClasses" location="/Users/axel/Projekte/actionscript"/>
+
+      <!-- Defines the Swf Ant Task by setting a name and the path to the task. -->
+      <taskdef name="swfmill" classname="org.as2lib.ant.Swfmill" />
+      <taskdef name="mtasc" classname="org.as2lib.ant.Mtasc"/>    
+
+      <!-- Target that uses the Swf Ant Task. -->
+      <target name="prepare">
+        <swfmill swfmill="${swfmill}"
+          src="assets.xml"
+          dest="${build}/wobble.swf"
+        cmd="simple"/>
+      </target>
+
+      <target name="compile" depends="prepare">
+        <mtasc classpath=".:${additionalClasses}:${mmClasses}"  trace="zeroi.logging.LoggerClass.log" main="true" swf="${build}/wobble.swf">        
+
+          <srcset dir=".">
+            <include name="zeroi/logging/LuminicPublisher.as"/>
+            <include name="org/roteroktober/zkmax/Wobble.as"/>
+          </srcset>    
+        </mtasc>
+      </target>
+
+    </project>
