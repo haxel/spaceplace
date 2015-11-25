@@ -5,4 +5,4 @@ An installation with an interactive projection, a website and a java client for 
 
 bits of source missing
 
-![puicture of architecture](spaceplace/raw/master/architecture.png "Arrchitecture")
+![picture of architecture](https://raw.githubusercontent.com/haxel/spaceplace/master/architecture.png "Architecture")
